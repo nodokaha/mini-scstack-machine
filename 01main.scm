@@ -37,10 +37,7 @@
 			   (display "Not match")
 			   (loop (- i 1)))))))
 
-(define (fib-buffer)
-  (begin
-    (push (cadr buffer))
-    (push (+ (pop) (car buffer)))))
+(define (fib-buffer) (push (+ (car buffer) (cadr buffer))))
 (define (type-check)
   (cond
    ((number? (car buffer)) (display "current is Number"))
