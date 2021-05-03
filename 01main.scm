@@ -2,7 +2,7 @@
 (define history '())
 (define view-past '())
 (define (push a)
-  (set! view-past (cons 'push view-past))
+  (set! view-past (cons (list 'push a) view-past))
   (set! buffer (append (list a) buffer)))
 (define (pop)
   (let ((a (car buffer)))
@@ -49,3 +49,4 @@
   (if (< a 1)
       (list a)
       (append (list a) (number-sequence (- a 1)))))
+(define (previous-type) (let ((now-eval (lambda (x) (eval x (interaction-environment))))) (map now-eval view-past)))
