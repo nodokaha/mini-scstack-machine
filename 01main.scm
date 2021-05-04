@@ -31,12 +31,12 @@
   (let loop ((i (- (length buffer) 1)))
     (if (= a (car buffer))
 	(car buffer) (begin
-		       (set! view-past (cons 'match-buffer view-past))
+		       (set! view-past (cons (list 'match-buffer a) view-past))
 		       (pop)
 		       (if (= i 0)
-			   (display "Not match")
+			   #f
 			   (loop (- i 1)))))))
-
+(define (elt s) (let loop ((a buffer)(b s)) (if (= 0 b) (car a) (loop (cadr a) (- b 1)))))
 (define (fib-buffer) (push (+ (car buffer) (cadr buffer))))
 (define (type-check)
   (cond
