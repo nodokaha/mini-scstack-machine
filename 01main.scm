@@ -9,7 +9,7 @@
     (begin
       (set! view-past (cons 'pop view-past))
       (set! buffer (cdr buffer))
-      (set! history (append (list a) history)) a)))
+      (set! history (append (list a) history)) (eval a (interaction-environment)))))
 (define (add)
   (set! view-past (cons 'add view-past)) (push (+ (pop) (pop))))
 (define (sub)
@@ -36,7 +36,7 @@
 		       (if (= i 0)
 			   #f
 			   (loop (- i 1)))))))
-(define (elt s) (let loop ((a buffer)(b s)) (if (= 0 b) (car a) (loop (cdr a) (- b 1)))))
+(define (elt s) (list-ref buffer s))
 (define (fib-buffer) (push (+ (car buffer) (cadr buffer))))
 (define (type-check)
   (cond
