@@ -9,36 +9,39 @@
     (begin
       (set! view-past (cons 'pop view-past))
       (set! buffer (cdr buffer))
-      (set! history (append (list a) history)) (eval a (interaction-environment)))))
+      (set! history (append (list a) history))
+      (if (number? (car a))
+	  a
+	  (eval a (interaction-environment))))))
 (define (add)
-  (set! view-past (cons 'add view-past)) (push (+ (pop) (pop))))
+  (let ((a (car buffer))
+	(b (cadr buffer))) (begin
+			     (set! view-past (cons 'sub view-past))
+			     (set! buffer (cddr buffer))
+			     (push (+ b a)))))
 (define (sub)
   (let ((a (car buffer))
 	(b (cadr buffer))) (begin
 			     (set! view-past (cons 'sub view-past))
-			     (pop)
-			     (pop)
+			     (set! buffer (cddr buffer))
 			     (push (- b a)))))
 (define (div)
   (let ((a (car buffer))
-	(b (cadr buffer)) (begin
+	(b (cadr buffer))) (begin
 			    (set! view-past (cons 'div view-past))
-			    (pop)
-			    (pop)
-			    (push (/ b a))))))
+			    (set! buffer (cddr buffer))
+			    (push (/ b a)))))
 (define (times)
   (let ((a (car buffer))
-	(b (cadr buffer)) (begin
+	(b (cadr buffer))) (begin
 			    (set! view-past (cons 'div view-past))
-			    (pop)
-			    (pop)
-			    (push (* b a))))))
+			    (set! buffer (cddr buffer))
+			    (push (* b a)))))
 (define (exch)
   (let ((a (car buffer))
 	(b (cadr buffer))) (begin
 			     (set! view-past (cons 'exch view-past))
-			     (pop)
-			     (pop)
+			     (set! buffer (cddr buffer))
 			     (push a)
 			     (push b))))
 (define (match-buffer a)
@@ -46,10 +49,14 @@
     (if (= a (car buffer))
 	(car buffer) (begin
 		       (set! view-past (cons (list 'match-buffer a) view-past))
-		       (pop)
+		       (set! buffer (cdr buffer))
 		       (if (= i 0)
 			   #f
 			   (loop (- i 1)))))))
+(define (clear)
+  (begin
+    (set! buffer '())
+    (set! history '())))
 (define (elt s) (list-ref buffer s))
 (define (fib-buffer) (push (+ (car buffer) (cadr buffer))))
 (define (type-check)
