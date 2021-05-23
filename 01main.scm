@@ -19,6 +19,20 @@
 			     (pop)
 			     (pop)
 			     (push (- b a)))))
+(define (div)
+  (let ((a (car buffer))
+	(b (cadr buffer)) (begin
+			    (set! view-past (cons 'div view-past))
+			    (pop)
+			    (pop)
+			    (push (/ b a))))))
+(define (times)
+  (let ((a (car buffer))
+	(b (cadr buffer)) (begin
+			    (set! view-past (cons 'div view-past))
+			    (pop)
+			    (pop)
+			    (push (* b a))))))
 (define (exch)
   (let ((a (car buffer))
 	(b (cadr buffer))) (begin
