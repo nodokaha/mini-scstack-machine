@@ -61,3 +61,5 @@
       (list a)
       (append (list a) (number-sequence (- a 1)))))
 (define (previous-type) (let ((now-eval (lambda (x) (eval x (interaction-environment))))) (map now-eval view-past)))
+(define (exch-list a) (cons (list-ref a (- (length a) 1)) (reverse (cdr (reverse a))))) 
+(define (num-exch-list a n) (let loop ((x a)(j n)) (if (< j 1) x (loop (exch-list x) (- j 1)))))
