@@ -1,6 +1,7 @@
 (define buffer '())
 (define history '())
 (define view-past '())
+(define cc-list '())
 (define (push a)
   (set! view-past (cons (list 'push a) view-past))
   (set! buffer (append (list a) buffer)))
@@ -58,7 +59,6 @@
     (set! buffer '())
     (set! history '())))
 (define (elt s) (list-ref buffer s))
-(define (fib-buffer) (push (+ (car buffer) (cadr buffer))))
 (define (type-check)
   (cond
    ((number? (car buffer)) (display "current is Number"))
@@ -70,3 +70,7 @@
 (define (previous-type) (let ((now-eval (lambda (x) (eval x (interaction-environment))))) (map now-eval view-past)))
 (define (exch-list a) (cons (list-ref a (- (length a) 1)) (reverse (cdr (reverse a))))) 
 (define (num-exch-list a n) (let loop ((x a)(j n)) (if (< j 1) x (loop (exch-list x) (- j 1)))))
+(define (factorial n) (cond ((= 0 n) 1) ((> n 0) (* n (factorial (- n 1))))))
+(define (P x y) (/ (factorial x) (factorial y)))
+(define (C x y) (/ (factorial x) (* (factorial y) (factorial (- x y)))))
+(define (pascal-tri n) (let loop ((x 0)(y 0)) (begin (if (even? (C x y)) (display "#") (display " ")) (display " ")) (cond ((= x n) #t) ((= x y) (begin (newline) (loop (+ x 1) 0))) (else (loop x (+ y 1))))))
