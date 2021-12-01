@@ -1,6 +1,6 @@
 ;;         schet
 ;; - scheme text editor -
-(import (scheme base) (scheme file) (scheme read) (scheme write))
+(import (scheme base) (scheme file) (scheme read) (scheme write) (scheme repl) (scheme eval))
 ;; (cond-expand (guile (begin (use-modules (ice-9 readline)) (activate-readline))))
 
 (define f-r '())
