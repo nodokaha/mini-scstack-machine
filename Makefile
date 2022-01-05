@@ -9,5 +9,7 @@ repl:
 run: run.scm
 	${scheme} run.scm
 
+schet-native:
+	bigloo schet/native-main.scm -o schet/schet
 clean:
-	rm run.scm
+	rm run.scm schet/schet
