@@ -76,6 +76,7 @@
    ((or (eq? op 'open-output-file) (eq? op 'ew)) (display "-*-write-file-*-\n") (begin (if (null? f-w) #t (close-output-port f-w)) (set! f-w (open-output-file (output-safe-read)))))
    ((eq? op 'open-input-buffer) (set! f-r (open-input-string buffer)))
    ((eq? op 'open-output-buffer) (set! f-w (open-output-string)))
+   ((eq? op 'save-file) (display "-*-save-file-*-\n") (call-with-output-file (output-safe-read) (lambda (file) (display (list->string (reverse register)) file))))
    ((eq? op 'finish-write) (close-output-port f-w) (set! f-w '()))
    ((or (eq? op 'read-all) (eq? op 'ht)) (if (null? f-r)
 					     (display "please, run. open-input-file\n")
