@@ -11,7 +11,7 @@
       (set! view-past (cons 'pop view-past))
       (set! buffer (cdr buffer))
       (set! history (append (list a) history))
-      (if (number? (car a))
+      (if (number? (if (pair? a) (car a) a))
 	  a
 	  (eval a (interaction-environment))))))
 (define (add)

@@ -11,5 +11,16 @@ run: run.scm
 
 schet-native:
 	bigloo schet/native-main.scm -o schet/schet
+
+racket-schet:
+	raco exe -o schet/rschet schet/racket-main.scm 
+
+racket-schet-win:
+	raco cross --target x86_64-win32 exe -o schet/rschet.exe --embed-dlls schet/racket-main.scm 
+
+dep:
+	raco install raco-cross
+	raco cross --target x86_64-win32 pkg install r7rs
+
 clean:
-	rm run.scm schet/schet
+	rm -f run.scm schet/schet schet/rschet*
