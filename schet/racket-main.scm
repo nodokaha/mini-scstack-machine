@@ -1,4 +1,4 @@
-#lang racket/base
+#lang racket/gui
 (require r7rs)
 ;;         schet
 ;; - scheme text editor -
@@ -29,6 +29,18 @@
 (define (push x) (set! register (append (list x) register)))
 ;; (define f)
 ;; (define (capture x) (call/cc (lambda (cc) (set! f cc) (cc x))))
+
+(define frame (new frame%
+		   [label "Canvas"]
+		   [width 300]
+		   [height 300]))
+(new canvas%
+     [parent frame]
+     [paint-callback (lambda (canvas dc)
+		       (send dc set-scale 3 3)
+		       (send dc set-text-foreground "black")
+		       (send dc draw-text "Don't Panic!" 0 0))])
+
 (define (output-safe-read) (let*
 			((str (read))
 			 (file-name (if (symbol? str) (symbol->string str)  (begin (display "error! set .tmp\n") (delete-file ".tmp") ".tmp"))))
@@ -86,6 +98,7 @@
 						 ((i (read-char f-r)))
 					       (when (not (eof-object? i))
 						 (display i) (loop (read-char f-r))))))
+   ((or (eq? op 'create-window) (eq? op 'cw)) (send frame show #t))
    ((or (eq? op 'write) (eq? op 'i)) (display "-*-write-*- (end key is Ctrl and d (C-d) (linux) or Ctrl and z (C-z) after return)\n") (read-char)
     (if (null? f-w)
 	(display "please, run. open-output-file\n")
