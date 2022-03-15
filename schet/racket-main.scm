@@ -1,4 +1,5 @@
-#lang racket/gui
+#lang racket
+(require (prefix-in sdl2: sdl2/pretty))
 (require r7rs)
 ;;         schet
 ;; - scheme text editor -
@@ -8,7 +9,6 @@
 ;;	     (gauche (import (gauche base))))
 ;; (module repl
 ;; 	(main main))
-
 
 (define (main) 
   (display "Hello, editor.\n")
@@ -29,17 +29,6 @@
 (define (push x) (set! register (append (list x) register)))
 ;; (define f)
 ;; (define (capture x) (call/cc (lambda (cc) (set! f cc) (cc x))))
-
-(define frame (new frame%
-		   [label "Canvas"]
-		   [width 300]
-		   [height 300]))
-(new canvas%
-     [parent frame]
-     [paint-callback (lambda (canvas dc)
-		       (send dc set-scale 3 3)
-		       (send dc set-text-foreground "black")
-		       (send dc draw-text "Don't Panic!" 0 0))])
 
 (define (output-safe-read) (let*
 			((str (read))
@@ -98,12 +87,22 @@
 						 ((i (read-char f-r)))
 					       (when (not (eof-object? i))
 						 (display i) (loop (read-char f-r))))))
-   ((or (eq? op 'create-window) (eq? op 'cw)) (send frame show #t))
+   ((or (eq? op 'create-window) (eq? op 'cw)) (sdl2:show-window! window))
+   ((or (eq? op 'delete-window) (eq? op 'dw)) (sdl2:hide-window! window))
+   ((or (eq? op 'set-color) (eq? op 'sc)) (sdl2:fill-rect! surface #f (sdl2:map-rgb (sdl2:surface-format surface) 0 128 255)))
+   ((or (eq? op 'refresh-window) (eq? op 'rw)) (sdl2:update-window-surface! window))
    ((or (eq? op 'write) (eq? op 'i)) (display "-*-write-*- (end key is Ctrl and d (C-d) (linux) or Ctrl and z (C-z) after return)\n") (read-char)
     (if (null? f-w)
 	(display "please, run. open-output-file\n")
 	(begin (let loop ((i (read-char))) (when (not (eof-object? i)) (write-char i f-w) (loop (read-char)))))))
    ((eof-object? op) (set! count (+ 1 count)) (if (>= count 3) (begin (set! count 0) (display "\nIf you want to exit, please type \"exit\".\n")) (display "\n")))))
 
-
+(begin
+  (sdl2:set-main-ready!)
+  (sdl2:init! '())
+  (define window (sdl2:create-window! "test" 0 0 300 300 '()))
+  (define surface (sdl2:get-window-surface window))
+  (sdl2:hide-window! window)
+)
 (main)
+(sdl2:quit!)
