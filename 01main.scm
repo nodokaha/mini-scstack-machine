@@ -74,3 +74,4 @@
 (define (P x y) (/ (factorial x) (factorial y)))
 (define (C x y) (/ (factorial x) (* (factorial y) (factorial (- x y)))))
 (define (pascal-tri n) (let loop ((x 0)(y 0)) (begin (if (even? (C x y)) (display "#") (display " ")) (display " ")) (cond ((= x n) #t) ((= x y) (begin (newline) (loop (+ x 1) 0))) (else (loop x (+ y 1))))))
+(define (colatz n) (letrec ((colatz-iter (lambda (x) (if (even? x) (cons  x (colatz-iter (/ x 2))) (if (eq? 1 x) (list x) (cons x (colatz-iter (+ 1 (* 3 x))))))))) (if (eq? 1 n) (cons 1 (colatz-iter 4)) (colatz-iter n))))
